@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hane Yoga — Tu cámara ve tu postura</title>
+<meta name="description" content="Yoga con corrección de alineación en tiempo real. Tu cámara lee tu postura y te guía. El video nunca sale de tu iPhone.">
+
+<meta property="og:title" content="Hane Yoga — Tu cámara ve tu postura">
+<meta property="og:description" content="Corrección de alineación en tiempo real, en tu iPhone. Precio de fundador para los primeros 100.">
+<meta property="og:image" content="img/hero.jpg">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0D0C0B">
+
+<!--
+  Landing de Hane Yoga · rediseño ago 2026
+
+  ── REGLAS DE PRECIO (no romperlas al editar) ─────────────────────────
+  1. El precio regular SIEMPRE visible junto al de fundador, tachado.
+     El de fundador nunca aparece solo.
+  2. NO es un descuento: es un precio de fundador. Prohibido "oferta",
+     "rebaja", "promoción", "% OFF" y cualquier cuenta regresiva.
+  3. La escasez es de CUPOS ("primeros 100"), nunca de tiempo.
+  4. NO hay contador de cupos restantes. Sin validación de recibos en
+     servidor no hay número confiable, y uno inventado destruye la
+     confianza — que es todo el canal de adquisición.
+  5. El precio se justifica por la MEDICIÓN, no por "usamos IA". La
+     comparación es contra una clase particular, no contra otras apps.
+  6. Cifras faltantes van marcadas [PENDIENTE: …], nunca rellenadas a ojo.
+
+  ── LOS PRECIOS VIVEN EN UN SOLO SITIO ────────────────────────────────
+  Están abajo en el bloque marcado «PRECIOS». Son los del **Tier 1**
+  (Estados Unidos y equivalentes) tal como están HOY en App Store Connect:
+
+      fundador  $54    ·  anual regular  $79,99  ·  mensual  $13,99
+
+  ⚠️ Estos NO son los $69 / $99,99 / $16,99 del CLAUDE.md: el Tier 1 quedó
+  pendiente a propósito (ago 2026) y hoy esos mercados pagan precio de
+  Tier 2. El día que se suba el Tier 1 en App Store Connect hay que
+  cambiar los tres números aquí, y solo aquí.
+
+  Quien entra desde otro país ve su propio precio en la App Store; esta
+  página solo puede enseñar una referencia, y tiene que ser la verdadera.
+
+  Un solo archivo, sin dependencias, sin analítica. Se sube tal cual.
+-->
+
+<style>
+  :root{
+    --carbon-900:#0D0C0B;  --carbon-800:#14120F;  --carbon-700:#1D1A17;
+    --cream-100:#FFFBF7;   --cream-300:#F9EBE0;   --cream-500:#E7D4C6;
+    --blue-300:#8FD3F4;    --blue-400:#5AB8E8;    --blue-500:#027EBE;
+    --ink:var(--cream-100);
+    --ink-body:rgba(249,235,224,.80);
+    --ink-soft:rgba(231,212,198,.58);
+    --border:rgba(255,255,255,.11);
+    --display:"New York","Times New Roman",Georgia,"Iowan Old Style",serif;
+    --body:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{
+    background:var(--carbon-900); color:var(--ink); font-family:var(--body);
+    line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  }
+  img{max-width:100%;display:block}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  .narrow{max-width:760px;margin:0 auto}
+
+  /* Títulos: New York, MAYÚSCULAS, con tracking. Regla de marca. */
+  h1,h2,h3,.display{
+    font-family:var(--display); font-weight:600;
+    text-transform:uppercase; letter-spacing:.055em; line-height:1.12;
+  }
+  .eyebrow{
+    font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--blue-300);font-weight:700;margin-bottom:18px;
+  }
+
+  /* ── Hero: fotografía a sangre, como el home de la app ────────── */
+  .hero{
+    position:relative;min-height:100svh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;
+    padding:80px 24px 64px;overflow:hidden;
+  }
+  .hero-bg{
+    position:absolute;inset:0;background:url('img/hero.jpg') center/cover no-repeat;
+  }
+  .hero-bg::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,
+      rgba(13,12,11,.72) 0%, rgba(13,12,11,.42) 38%, rgba(13,12,11,.96) 100%);
+  }
+  .hero > *{position:relative;z-index:1}
+  .logo{width:min(210px,52vw);margin:0 auto 34px;filter:drop-shadow(0 4px 22px rgba(0,0,0,.5))}
+  .hero h1{font-size:clamp(34px,7.2vw,66px);max-width:14ch;margin:0 auto}
+  .lede{
+    font-size:clamp(16px,2.2vw,19.5px);font-weight:300;color:var(--ink-body);
+    max-width:38ch;margin:26px auto 0;
+  }
+  .badge{
+    display:inline-flex;align-items:center;gap:9px;margin-top:30px;
+    font-size:13px;color:var(--cream-300);
+    border:1px solid var(--border);border-radius:999px;padding:9px 18px;
+    background:rgba(13,12,11,.45);backdrop-filter:blur(14px);
+  }
+  .badge svg{width:14px;height:14px;flex:none}
+  .scroll-hint{
+    margin-top:46px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+
+  section{padding:clamp(64px,10vw,110px) 0}
+  .section-title{font-size:clamp(24px,4.4vw,40px);max-width:16ch}
+
+  /* ── Cómo funciona: foto + pasos ──────────────────────────────── */
+  .split{display:grid;gap:clamp(28px,5vw,56px);align-items:center}
+  @media(min-width:860px){.split{grid-template-columns:1fr 1fr}}
+  .shot{border-radius:26px;overflow:hidden;border:1px solid var(--border)}
+  .shot img{width:100%;height:100%;object-fit:cover}
+
+  .steps{margin-top:34px;display:grid;gap:2px}
+  .step{padding:22px 0;border-top:1px solid var(--border)}
+  .step:last-child{border-bottom:1px solid var(--border)}
+  .step .n{
+    font-family:var(--display);font-size:12px;color:var(--blue-300);
+    letter-spacing:.14em;margin-bottom:9px;
+  }
+  .step h3{font-size:15px;letter-spacing:.05em;margin-bottom:7px}
+  .step p{font-size:15px;color:var(--ink-body);font-weight:300;max-width:46ch}
+
+  /* ── Argumento ─────────────────────────────────────────────────── */
+  .argument{
+    background:var(--carbon-800);border:1px solid var(--border);
+    border-radius:28px;padding:clamp(28px,5vw,52px);
+  }
+  .argument h2{font-size:clamp(22px,3.4vw,32px);margin-bottom:20px;max-width:18ch}
+  .argument p{color:var(--ink-body);font-weight:300;font-size:16.5px;max-width:60ch}
+  .argument p + p{margin-top:16px}
+  .pull{
+    margin-top:28px;padding-top:24px;border-top:1px solid var(--border);
+    font-family:var(--display);text-transform:none;letter-spacing:0;
+    font-size:clamp(18px,2.6vw,23px);line-height:1.45;color:var(--cream-300);
+    max-width:32ch;
+  }
+
+  /* ── PRECIOS ───────────────────────────────────────────────────── */
+  .plans{display:grid;gap:18px;margin-top:38px}
+  @media(min-width:820px){.plans{grid-template-columns:1.5fr 1fr;align-items:start}}
+  .plan{
+    background:var(--carbon-800);border:1px solid var(--border);
+    border-radius:26px;padding:clamp(24px,3.4vw,34px);
+  }
+  .plan.featured{
+    border-color:rgba(90,184,232,.55);border-width:1.6px;background:var(--carbon-700);
+  }
+  .chip{
+    display:inline-block;background:var(--blue-400);color:var(--carbon-900);
+    font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+    padding:6px 12px;border-radius:999px;margin-bottom:20px;
+  }
+  .chip.quiet{
+    background:transparent;color:var(--ink-soft);
+    border:1px solid var(--border);font-weight:600;
+  }
+  .price-row{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .was{font-size:20px;color:var(--ink-soft);text-decoration:line-through}
+  .now{font-family:var(--display);font-size:clamp(42px,7.5vw,58px);letter-spacing:.01em}
+  .per{font-size:15px;color:var(--ink-soft)}
+  .permo{color:var(--blue-300);font-size:15px;margin-top:11px}
+  .plan .fine{color:var(--ink-soft);font-size:13.5px;margin-top:18px;font-weight:300;max-width:44ch}
+  .plan.secondary .now{font-size:clamp(28px,4.4vw,35px)}
+
+  ul.included{list-style:none;margin-top:24px;padding-top:22px;border-top:1px solid var(--border)}
+  ul.included li{
+    font-size:15px;color:var(--ink-body);font-weight:300;
+    padding-left:24px;position:relative;margin-bottom:10px;
+  }
+  ul.included li::before{content:"—";position:absolute;left:0;color:var(--blue-300)}
+
+  .cta{
+    display:block;width:100%;text-align:center;margin-top:26px;
+    background:var(--cream-300);color:var(--carbon-900);
+    font-size:16px;font-weight:600;text-decoration:none;
+    padding:16px 20px;border-radius:999px;transition:background .18s,transform .18s;
+  }
+  .cta:hover{background:var(--cream-100);transform:translateY(-1px)}
+  .cta.ghost{background:transparent;color:var(--ink-body);border:1px solid var(--border)}
+  .cta.ghost:hover{background:rgba(255,255,255,.06)}
+  .disclosure{
+    font-size:12.5px;color:var(--ink-soft);text-align:center;
+    margin:24px auto 0;max-width:58ch;line-height:1.65;
+  }
+
+  /* ── Comparación ───────────────────────────────────────────────── */
+  .compare-grid{
+    display:grid;gap:16px;margin-top:26px;
+    grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  }
+  .cell{padding:24px;border:1px solid var(--border);border-radius:20px}
+  .cell .big{font-family:var(--display);font-size:29px;display:block;margin-bottom:8px}
+  .cell .lbl{font-size:14px;color:var(--ink-soft);font-weight:300}
+  .cell.ours{border-color:rgba(90,184,232,.5);background:var(--carbon-800)}
+  .cell.ours .big{color:var(--blue-300)}
+
+  /* ── Privacidad ────────────────────────────────────────────────── */
+  .privacy{
+    border:1px solid var(--border);border-radius:28px;overflow:hidden;
+    display:grid;
+  }
+  @media(min-width:860px){.privacy{grid-template-columns:1fr 1fr}}
+  .privacy .copy{padding:clamp(28px,4.6vw,48px);align-self:center}
+  .privacy .copy h2{font-size:clamp(21px,3.2vw,30px);margin-bottom:18px;max-width:16ch}
+  .privacy .copy p{color:var(--ink-body);font-weight:300;font-size:16px;max-width:44ch}
+  .privacy .copy p + p{margin-top:14px}
+  .privacy .pic{min-height:280px;background:url('img/asana1.jpg') center/cover no-repeat}
+
+  /* ── Preguntas ─────────────────────────────────────────────────── */
+  details{border-bottom:1px solid var(--border);padding:20px 0}
+  summary{
+    cursor:pointer;font-size:16px;font-weight:500;list-style:none;
+    display:flex;justify-content:space-between;gap:18px;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";color:var(--blue-300);font-size:20px;line-height:1;flex:none}
+  details[open] summary::after{content:"–"}
+  details p{margin-top:14px;color:var(--ink-body);font-size:15px;font-weight:300;max-width:62ch}
+
+  /* ── Cierre ────────────────────────────────────────────────────── */
+  .closing{
+    position:relative;text-align:center;padding:clamp(80px,12vw,130px) 24px;
+    background:url('img/group.jpg') center/cover no-repeat;
+  }
+  .closing::before{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(13,12,11,.86),rgba(13,12,11,.94));
+  }
+  .closing > *{position:relative;z-index:1}
+  .closing h2{font-size:clamp(24px,5vw,44px);max-width:14ch;margin:0 auto}
+  .closing .cta{max-width:340px;margin-left:auto;margin-right:auto}
+
+  footer{padding:54px 0 46px;border-top:1px solid var(--border);text-align:center}
+  footer a{color:var(--ink-soft);text-decoration:none;font-size:13.5px;margin:0 11px}
+  footer a:hover{color:var(--ink)}
+  .copyright{color:var(--ink-soft);font-size:12.5px;margin-top:24px}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══════════════════════════════════════════════════════ -->
+<header class="hero">
+  <div class="hero-bg"></div>
+  <img class="logo" src="img/logo.png" alt="Hane Yoga">
+  <h1>Tu cámara ve tu postura</h1>
+  <p class="lede">
+    Hane sigue 33 puntos de tu cuerpo y te corrige mientras practicas.
+    Sin wearables, sin videollamadas, sin nadie mirando.
+  </p>
+  <span class="badge">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+    </svg>
+    Tu video nunca sale de tu iPhone
+  </span>
+  <div class="scroll-hint">Cómo funciona ↓</div>
+</header>
+
+<!-- ══ CÓMO FUNCIONA ═════════════════════════════════════════════ -->
+<section class="wrap">
+  <div class="split">
+    <div class="shot"><img src="img/pose.jpg" alt="Práctica guiada por la cámara" loading="lazy"></div>
+    <div>
+      <div class="eyebrow">Cómo funciona</div>
+      <h2 class="section-title">Tres pasos y el tapete</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="n">01</div>
+          <h3>Apoyas el teléfono</h3>
+          <p>Lo dejas de pie a un par de metros. No necesitas nada más.</p>
+        </div>
+        <div class="step">
+          <div class="n">02</div>
+          <h3>Entras en la postura</h3>
+          <p>El borde de la pantalla se pone naranja mientras te ajustas y verde cuando la alineación es correcta. Una voz te lleva paso a paso.</p>
+        </div>
+        <div class="step">
+          <div class="n">03</div>
+          <h3>Ves tu progreso medido</h3>
+          <p>La app cronometra cuánto tardas en entrar bien a cada postura y cuántas correcciones necesitas. La mejora es un dato, no una sensación.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ARGUMENTO ═════════════════════════════════════════════════ -->
+<section class="wrap">
+  <div class="argument">
+    <div class="eyebrow">Por qué cuesta lo que cuesta</div>
+    <h2>Lo que pagas es la corrección</h2>
+    <p>
+      Un video de yoga te enseña la postura. Nadie te dice si la estás haciendo mal.
+      Eso es lo que hace un profesor, y por eso una clase particular cuesta lo que
+      cuesta: alguien mira tu cuerpo y te corrige.
+    </p>
+    <p>
+      Hane hace esa parte. Y como mide cada corrección, al mes puedes ver si de
+      verdad estás mejorando o llevas cuatro semanas repitiendo el mismo error.
+      Eso no lo sabe ni quien lleva años practicando solo.
+    </p>
+    <p class="pull">La diferencia entre practicar y repetir es que alguien mire.</p>
+  </div>
+</section>
+
+<!-- ══ PRECIOS ═══════════════════════════════════════════════════
+     ⚠️ Los tres números de aquí abajo son los únicos del archivo.
+        Hoy son los del Tier 1 REAL en App Store Connect:
+        fundador 54 · anual regular 79,99 · mensual 13,99
+        (13,99 × 12 = 167,88 → el anual ahorra 52 %, el fundador 68 %)
+     ══════════════════════════════════════════════════════════════ -->
+<section class="wrap" id="precio">
+  <div class="eyebrow">Precio</div>
+  <h2 class="section-title">Los primeros 100 entran como fundadores</h2>
+
+  <div class="plans">
+    <div class="plan featured">
+      <span class="chip">Precio de fundador · primeros 100</span>
+      <div class="price-row">
+        <span class="was">$79,99</span>
+        <span class="now">$54</span>
+        <span class="per">/ año</span>
+      </div>
+      <div class="permo">Sale a $4,50 al mes</div>
+      <p class="fine">
+        Tu precio queda congelado mientras mantengas la suscripción. No es una
+        oferta que caduca: es el precio que le corresponde a quien llega primero.
+        Cuando se acaben los 100 cupos, el plan pasa a $79,99 al año.
+      </p>
+      <ul class="included">
+        <li>Todas las clases y los 6 estilos</li>
+        <li>Corrección de alineación en tiempo real</li>
+        <li>Guía por voz en español e inglés</li>
+        <li>Tu progreso medido, postura por postura</li>
+        <li>7 días gratis antes del primer cobro</li>
+      </ul>
+      <!-- [PENDIENTE: URL] Reemplazar por el enlace real del App Store al publicar. -->
+      <a class="cta" href="#" data-cta="appstore">Empezar 7 días gratis</a>
+    </div>
+
+    <div class="plan secondary">
+      <span class="chip quiet">Sin compromiso</span>
+      <div class="price-row">
+        <span class="now">$13,99</span>
+        <span class="per">/ mes</span>
+      </div>
+      <p class="fine">
+        Más o menos lo que cuesta una clase suelta. Sin permanencia: cancelas
+        cuando quieras desde los ajustes de tu teléfono.
+      </p>
+      <!-- [PENDIENTE: URL] Mismo enlace del App Store. -->
+      <a class="cta ghost" href="#" data-cta="appstore">Ir al plan mensual</a>
+    </div>
+  </div>
+
+  <p class="disclosure">
+    Precios de referencia en dólares. Al abrir la app verás el precio de tu país
+    en tu moneda. La suscripción se renueva automáticamente salvo que la canceles
+    al menos 24 horas antes; puedes gestionarla desde los ajustes de tu Apple&nbsp;ID.
+  </p>
+
+  <div class="compare-grid" style="margin-top:44px">
+    <div class="cell">
+      <span class="big">$25–40</span>
+      <span class="lbl">Una clase suelta en estudio</span>
+    </div>
+    <div class="cell">
+      <span class="big">$60–120</span>
+      <span class="lbl">Una hora con profesor particular</span>
+    </div>
+    <div class="cell ours">
+      <span class="big">$4,50</span>
+      <span class="lbl">Hane al mes, con corrección todos los días</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PRIVACIDAD ════════════════════════════════════════════════ -->
+<section class="wrap">
+  <div class="privacy">
+    <div class="copy">
+      <div class="eyebrow">Privacidad</div>
+      <h2>Nadie te ve practicar</h2>
+      <p>
+        La detección corre entera dentro de tu iPhone. Los fotogramas se procesan
+        en memoria y nunca se graban, ni se guardan, ni se suben a ningún servidor.
+      </p>
+      <p>
+        No es una promesa de marketing: es la razón por la que la app funciona sin
+        conexión, y por la que la cámara no aparece declarada como dato recogido en
+        nuestra ficha del App Store.
+      </p>
+    </div>
+    <div class="pic" role="img" aria-label="Postura del árbol"></div>
+  </div>
+</section>
+
+<!-- ══ PREGUNTAS ═════════════════════════════════════════════════ -->
+<section class="wrap">
+  <div class="narrow">
+    <div class="eyebrow">Preguntas</div>
+    <h2 class="section-title" style="margin-bottom:26px">Lo que suelen preguntar</h2>
+
+    <details>
+      <summary>¿Necesito algún aparato además del teléfono?</summary>
+      <p>No. Ni pulsera, ni sensor, ni accesorio. Apoyas el iPhone a un par de metros y ya.</p>
+    </details>
+    <details>
+      <summary>¿Sirve si nunca he hecho yoga?</summary>
+      <p>Sí, y probablemente es cuando más sirve. La corrección de alineación existe precisamente para quien no tiene a nadie que le diga que está apoyando mal la rodilla.</p>
+    </details>
+    <details>
+      <summary>¿Qué pasa cuando se acaben los 100 cupos de fundador?</summary>
+      <p>El plan de fundador se retira y queda el anual regular. Quien ya entró sigue renovando a su precio mientras mantenga la suscripción: eso lo garantiza Apple, no nosotros.</p>
+    </details>
+    <details>
+      <summary>¿Puedo cancelar?</summary>
+      <p>Cuando quieras, desde los ajustes de tu Apple ID. Si cancelas durante los 7 días de prueba, no se cobra nada.</p>
+    </details>
+    <details>
+      <summary>¿Funciona sin conexión?</summary>
+      <p>Sí. La detección de postura es on-device, así que puedes practicar en modo avión. La conexión solo hace falta para crear la cuenta y gestionar la suscripción.</p>
+    </details>
+    <details>
+      <summary>¿Hay versión para Android?</summary>
+      <p>Todavía no. Hane nació en iPhone porque la detección on-device depende del chip; cuando exista Android lo diremos aquí.</p>
+    </details>
+  </div>
+</section>
+
+<!-- ══ CIERRE ════════════════════════════════════════════════════ -->
+<section class="closing">
+  <h2>Empieza hoy con 7 días gratis</h2>
+  <p class="lede" style="margin-top:20px">Sin tarjeta. El reloj arranca en tu primera práctica, no al descargar.</p>
+  <!-- [PENDIENTE: URL] Enlace real del App Store. -->
+  <a class="cta" href="#" data-cta="appstore">Descargar Hane Yoga</a>
+</section>
+
+<footer class="wrap">
+  <!-- Rutas RELATIVAS a propósito: en GitHub Pages el sitio cuelga de
+       /nombre-del-repo/, así que "/terminos.html" apuntaría a la raíz del
+       dominio y daría 404. Sin la barra inicial funciona en los dos casos. -->
+  <a href="terminos.html">Términos</a>
+  <a href="privacidad.html">Privacidad</a>
+  <a href="mailto:adavidrobayo7@gmail.com">Contacto</a>
+  <p class="copyright">© 2026 Hane Yoga · Hecho en Quito</p>
+</footer>
+
+</body>
+</html>
