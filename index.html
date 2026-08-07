@@ -63,8 +63,11 @@
   a{color:inherit}
   .wrap{max-width:1120px;margin:0 auto;padding:0 clamp(20px,4vw,32px)}
   .narrow{max-width:780px;margin:0 auto}
-  section{padding-block:var(--gap-section)}
-  section + section{padding-top:0}      /* evita doble aire entre bloques */
+  /* Media dosis arriba y abajo: entre dos secciones suman una completa y
+     nunca puede quedar en cero. La versión anterior anulaba el padding
+     superior de la siguiente sección y las tarjetas acababan pegadas. */
+  section{padding-block:calc(var(--gap-section) / 2)}
+  section:first-of-type{padding-top:var(--gap-section)}
 
   h1,h2,h3,.display{
     font-family:var(--display);font-weight:600;
@@ -104,42 +107,42 @@
   .langbar button:hover{color:var(--ink)}
   .langbar button[aria-pressed="true"]{background:var(--cream-2);color:var(--carbon)}
 
-  /* ── Hero sin foto: aurora en CSS ─────────────────────────────── */
+  /* ── Hero: malla de constelación interactiva ──────────────────── */
   .hero{
     position:relative;min-height:100svh;display:grid;place-items:center;
     text-align:center;padding:120px clamp(20px,5vw,32px) 90px;overflow:hidden;
   }
-  .aurora{position:absolute;inset:-30% -10%;pointer-events:none;filter:blur(70px);opacity:.55}
-  .aurora i{position:absolute;display:block;border-radius:50%;mix-blend-mode:screen}
-  .aurora i:nth-child(1){
-    width:52vw;height:52vw;left:6%;top:8%;
-    background:radial-gradient(circle,rgba(90,184,232,.55),transparent 68%);
-    animation:drift1 22s var(--ease) infinite alternate;
+  /* Malla de constelación (canvas). El lienzo se dibuja solo; aquí únicamente
+     se coloca y se le pone un velo para que el titular no compita con los
+     puntos. `cursor:crosshair` invita a mover el ratón, que es donde está
+     la gracia del efecto. */
+  .mesh{position:absolute;inset:0;display:block;cursor:crosshair;z-index:0}
+  .mesh-veil{
+    position:absolute;inset:0;pointer-events:none;z-index:1;
+    background:radial-gradient(ellipse 58% 46% at 50% 46%,
+      rgba(13,12,11,.80) 0%, rgba(13,12,11,.42) 58%, transparent 100%);
   }
-  .aurora i:nth-child(2){
-    width:44vw;height:44vw;right:4%;top:22%;
-    background:radial-gradient(circle,rgba(231,212,198,.34),transparent 66%);
-    animation:drift2 27s var(--ease) infinite alternate;
-  }
-  .aurora i:nth-child(3){
-    width:38vw;height:38vw;left:30%;bottom:2%;
-    background:radial-gradient(circle,rgba(2,126,190,.42),transparent 70%);
-    animation:drift3 31s var(--ease) infinite alternate;
-  }
-  @keyframes drift1{to{transform:translate3d(9%,7%,0) scale(1.14)}}
-  @keyframes drift2{to{transform:translate3d(-11%,5%,0) scale(1.08)}}
-  @keyframes drift3{to{transform:translate3d(6%,-9%,0) scale(1.18)}}
-
-  /* Grano finísimo: quita el aspecto de degradado plano de plantilla. */
+  /* Grano finísimo: quita el aspecto de plantilla. */
   .grain{
-    position:absolute;inset:0;pointer-events:none;opacity:.30;mix-blend-mode:overlay;
+    position:absolute;inset:0;pointer-events:none;z-index:1;
+    opacity:.22;mix-blend-mode:overlay;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
   }
+  /* El contenido no debe robarle el ratón al lienzo, salvo los enlaces. */
+  .hero-inner{pointer-events:none}
+  .hero-inner a{pointer-events:auto}
   /* Nada de `.hero > *`: ese selector universal pisaba el position de las
-     capas de fondo y las colapsaba a 0×0. Se marca solo el contenido. */
-  .hero-inner{position:relative;z-index:2;display:grid;justify-items:center}
-  .hero .logo{width:min(168px,42vw);margin-bottom:34px;
-    filter:drop-shadow(0 6px 30px rgba(0,0,0,.55))}
+     capas de fondo y las colapsaba a 0×0. Se marca solo el contenido.
+     Y flex, no grid: en grid el `align-items` por defecto es `stretch`, que
+     estira verticalmente las imágenes con height:auto — el logo salía
+     deformado. Con flex + center la proporción se respeta. */
+  .hero-inner{position:relative;z-index:2;
+    display:flex;flex-direction:column;align-items:center}
+  .hero .logo{
+    width:min(168px,42vw);height:auto;aspect-ratio:640/379;
+    margin-bottom:34px;flex:none;
+    filter:drop-shadow(0 6px 30px rgba(0,0,0,.55));
+  }
   .hero h1{font-size:clamp(36px,7.4vw,72px);max-width:13ch}
   .hero .lede{margin-top:26px}
   .badge{
@@ -326,7 +329,8 @@
 
 <!-- ══ HERO ══════════════════════════════════════════════════════ -->
 <header class="hero">
-  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+  <canvas class="mesh" id="mesh" aria-hidden="true"></canvas>
+  <div class="mesh-veil" aria-hidden="true"></div>
   <div class="grain" aria-hidden="true"></div>
 
   <div class="hero-inner">
@@ -606,6 +610,161 @@
   document.querySelectorAll('[data-lang-btn]').forEach(function (b) {
     b.addEventListener('click', function () { setLang(b.dataset.langBtn); });
   });
+
+  /* ── Malla de constelación ───────────────────────────────────────
+     Puerto a JS plano del efecto de 21st.dev, con tres cambios:
+
+     · Colores de marca (crema sobre carbón, azul Hane en el acento) en
+       vez del cian sobre slate del original.
+     · Fuera las etiquetas hexadecimales de coordenadas. En el original
+       dan aire de panel de control; en una marca de yoga sobran.
+     · Las conexiones se dibujan solo entre vecinos de la retícula, no
+       comparando todos contra todos. El original hace O(n²) — con ~450
+       nodos son 100.000 comparaciones por fotograma, y en un portátil
+       modesto se nota. Así son cuatro por nodo y se ve igual.
+
+     Física: muelle amortiguado (ley de Hooke). Cada punto tiene su casa
+     y siempre vuelve; el cursor lo empuja con una fuerza proporcional a
+     lo rápido que te muevas. */
+  (function mesh() {
+    var canvas = document.getElementById('mesh');
+    if (!canvas) return;
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var ctx = canvas.getContext('2d', { alpha: false });
+    if (!ctx) return;
+
+    var CARBON = '#0D0C0B', NODE = '249,235,224', ACCENT = '90,184,232';
+    var SPACING = 58, SPRING = 18, DAMPING = 0.82, REACH = 210, LINK = 78;
+
+    var w = 0, h = 0, cols = 0, rows = 0, nodes = [], raf = 0, dpr = 1;
+    var m = { x: -9999, y: -9999, px: -9999, py: -9999, speed: 0 };
+
+    function build() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = canvas.clientWidth; h = canvas.clientHeight;
+      canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      cols = Math.ceil(w / SPACING) + 1; rows = Math.ceil(h / SPACING) + 1;
+      nodes = new Array(cols * rows);
+      for (var i = 0; i < cols; i++) {
+        for (var j = 0; j < rows; j++) {
+          var x = i * SPACING, y = j * SPACING;
+          nodes[i * rows + j] = {
+            x: x, y: y, vx: 0, vy: 0, bx: x, by: y,
+            r: Math.random() * 1.1 + 1.1, pulse: Math.random() * Math.PI * 2
+          };
+        }
+      }
+    }
+
+    function pointer(e) {
+      var p = e.touches ? e.touches[0] : e;
+      var box = canvas.getBoundingClientRect();
+      m.x = p.clientX - box.left; m.y = p.clientY - box.top;
+    }
+    function away() { m.x = -9999; m.y = -9999; }
+
+    var last = performance.now();
+    function frame(now) {
+      var dt = Math.min((now - last) / 1000, 0.05); last = now;
+      m.speed = Math.hypot(m.x - m.px, m.y - m.py) / (dt || 1);
+      m.px = m.x; m.py = m.y;
+
+      ctx.fillStyle = CARBON; ctx.fillRect(0, 0, w, h);
+
+      var k, n;
+      for (k = 0; k < nodes.length; k++) {
+        n = nodes[k];
+        n.pulse += dt * 2.2;
+        var dx = m.x - n.x, dy = m.y - n.y;
+        var d = Math.hypot(dx, dy);
+        if (d < REACH && d > 0) {
+          var power = 1 - d / REACH;
+          var force = power * (1300 + Math.min(m.speed, 3000) * 0.14);
+          n.vx -= (dx / d) * force * dt;
+          n.vy -= (dy / d) * force * dt;
+        }
+        n.vx += (n.bx - n.x) * SPRING * dt;
+        n.vy += (n.by - n.y) * SPRING * dt;
+        n.vx *= DAMPING; n.vy *= DAMPING;
+        n.x += n.vx * dt * 60; n.y += n.vy * dt * 60;
+      }
+
+      // Conexiones: solo derecha, abajo y las dos diagonales de abajo.
+      ctx.lineWidth = 0.7;
+      for (var i = 0; i < cols; i++) {
+        for (var j = 0; j < rows; j++) {
+          var a = nodes[i * rows + j];
+          var pares = [[i + 1, j], [i, j + 1], [i + 1, j + 1], [i - 1, j + 1]];
+          for (var p = 0; p < 4; p++) {
+            var ci = pares[p][0], cj = pares[p][1];
+            if (ci < 0 || ci >= cols || cj < 0 || cj >= rows) continue;
+            var b = nodes[ci * rows + cj];
+            var dd = Math.hypot(a.x - b.x, a.y - b.y);
+            if (dd >= LINK) continue;
+            ctx.strokeStyle = 'rgba(' + NODE + ',' + (1 - dd / LINK) * 0.17 + ')';
+            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+          }
+        }
+      }
+
+      for (k = 0; k < nodes.length; k++) {
+        n = nodes[k];
+        var dist = Math.hypot(m.x - n.x, m.y - n.y);
+        var near = dist < REACH;
+        var alpha = near ? 0.9 : 0.22 + Math.sin(n.pulse) * 0.08;
+        ctx.fillStyle = 'rgba(' + (near ? ACCENT : NODE) + ',' + alpha + ')';
+        var r = near ? n.r * 2 : n.r + Math.sin(n.pulse) * 0.28;
+        ctx.beginPath(); ctx.arc(n.x, n.y, Math.max(0.5, r), 0, 6.2832); ctx.fill();
+
+        if (dist < 95) {                       // anillo que respira
+          var ring = ((n.pulse * 18) % 30) + 4;
+          ctx.strokeStyle = 'rgba(' + ACCENT + ',' + (1 - ring / 34) * 0.35 + ')';
+          ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.arc(n.x, n.y, ring, 0, 6.2832); ctx.stroke();
+          ctx.lineWidth = 0.7;
+        }
+      }
+      raf = requestAnimationFrame(frame);
+    }
+
+    build();
+    window.addEventListener('resize', function () {
+      cancelAnimationFrame(raf); build();
+      if (!reduceMotion) raf = requestAnimationFrame(frame); else still();
+    });
+    window.addEventListener('mousemove', pointer, { passive: true });
+    window.addEventListener('mouseleave', away);
+    canvas.addEventListener('touchmove', pointer, { passive: true });
+    canvas.addEventListener('touchend', away);
+
+    function still() {                         // versión quieta, sin animación
+      ctx.fillStyle = CARBON; ctx.fillRect(0, 0, w, h);
+      ctx.lineWidth = 0.7;
+      for (var i = 0; i < cols; i++) for (var j = 0; j < rows; j++) {
+        var a = nodes[i * rows + j];
+        if (i + 1 < cols) { var b = nodes[(i + 1) * rows + j];
+          ctx.strokeStyle = 'rgba(' + NODE + ',.12)';
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
+        if (j + 1 < rows) { var c = nodes[i * rows + j + 1];
+          ctx.strokeStyle = 'rgba(' + NODE + ',.12)';
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(c.x, c.y); ctx.stroke(); }
+        ctx.fillStyle = 'rgba(' + NODE + ',.26)';
+        ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, 6.2832); ctx.fill();
+      }
+    }
+    if (reduceMotion) still(); else raf = requestAnimationFrame(frame);
+
+    // No gastar batería cuando el hero no se ve.
+    if ('IntersectionObserver' in window && !reduceMotion) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (e.isIntersecting) { last = performance.now(); raf = requestAnimationFrame(frame); }
+          else cancelAnimationFrame(raf);
+        });
+      }, { threshold: 0 }).observe(canvas);
+    }
+  })();
 
   /* ── Revelado al entrar en pantalla ──────────────────────────────
      Si no hay IntersectionObserver, o el usuario pidió menos
