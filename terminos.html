@@ -1,83 +1,77 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Términos y condiciones — Hane Yoga</title>
-<meta name="description" content="Términos y condiciones de Hane Yoga.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Terms of Service — Hane Yoga</title>
+<meta name="description" content="Terms of Service for Hane Yoga.">
 <meta name="robots" content="index,follow">
+<meta name="theme-color" content="#0D0C0B">
 <!-- GENERADO por landing/generar-legales.py desde YoogaAlive/LegalView.swift.
-     No editar a mano: se sobrescribe. Cambia el texto en Swift y regenera. -->
+     No editar a mano: se sobrescribe. Cambia el texto en Swift y regenera.
+     Inglés por defecto; el idioma se comparte con la landing vía localStorage. -->
 <style>
   :root{
-    --carbon-900:#0D0C0B; --cream-100:#FFFBF7; --cream-300:#F9EBE0;
-    --ink:var(--cream-100); --ink-body:rgba(249,235,224,.82);
-    --ink-soft:rgba(231,212,198,.62); --border:rgba(255,255,255,.12);
-    --display:"New York",Georgia,"Iowan Old Style",serif;
+    --carbon:#0D0C0B; --carbon-2:#131110;
+    --cream:#FFFBF7; --cream-2:#F9EBE0; --cream-3:#E7D4C6;
+    --blue:#8FD3F4;
+    --ink:var(--cream); --ink-body:rgba(249,235,224,.78); --ink-soft:rgba(231,212,198,.55);
+    --line:rgba(255,255,255,.10);
+    --display:"New York","Times New Roman",Georgia,"Iowan Old Style",serif;
     --body:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+    --ease:cubic-bezier(.22,.61,.36,1);
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--carbon-900);color:var(--ink);font-family:var(--body);
-    line-height:1.62;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:680px;margin:0 auto;padding:0 24px 90px}
-  header{padding:64px 0 30px;border-bottom:1px solid var(--border);margin-bottom:34px}
+  body{background:var(--carbon);color:var(--ink);font-family:var(--body);
+    line-height:1.68;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:720px;margin:0 auto;padding:0 clamp(20px,5vw,28px) 100px}
+  header{padding:96px 0 34px;border-bottom:1px solid var(--line);margin-bottom:40px;position:relative}
   .mark{font-family:var(--display);text-transform:uppercase;letter-spacing:.22em;
-    font-size:12px;color:var(--ink-soft);margin-bottom:26px;display:block;
-    text-decoration:none}
+    font-size:12px;color:var(--ink-soft);margin-bottom:28px;display:inline-block;
+    text-decoration:none;transition:color .2s var(--ease)}
+  .mark:hover{color:var(--ink)}
   h1{font-family:var(--display);font-weight:600;text-transform:uppercase;
-    letter-spacing:.05em;line-height:1.15;font-size:clamp(26px,5vw,38px)}
+    letter-spacing:.05em;line-height:1.14;font-size:clamp(27px,5.2vw,40px)}
   h2{font-family:var(--body);font-weight:600;font-size:16px;letter-spacing:.01em;
-    color:var(--ink);margin:34px 0 10px}
-  p{color:var(--ink-body);font-size:15.5px;font-weight:300;margin-bottom:12px}
-  p.updated{color:var(--ink-soft);font-size:13.5px;margin-bottom:4px}
-  .langs{display:flex;gap:10px;margin:30px 0 0}
-  .langs a{font-size:13px;color:var(--ink-soft);text-decoration:none;
-    border:1px solid var(--border);border-radius:999px;padding:6px 15px}
-  .langs a[aria-current]{color:var(--carbon-900);background:var(--cream-300);
-    border-color:var(--cream-300)}
-  section{display:none} section:target{display:block}
-  body:not(:has(section:target)) section#es{display:block}
-  footer{margin-top:56px;padding-top:24px;border-top:1px solid var(--border);
+    color:var(--ink);margin:38px 0 12px}
+  p{color:var(--ink-body);font-size:15.5px;font-weight:300;margin-bottom:13px}
+  p.updated{color:var(--ink-soft);font-size:13.5px;margin-bottom:6px}
+  a{color:var(--blue)}
+  .langbar{
+    position:fixed;top:16px;right:clamp(16px,4vw,28px);z-index:50;
+    display:flex;gap:2px;padding:3px;border-radius:999px;
+    background:rgba(19,17,16,.72);border:1px solid var(--line);
+    backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  }
+  .langbar button{font:inherit;font-size:12px;font-weight:600;letter-spacing:.08em;
+    padding:7px 14px;border:0;border-radius:999px;cursor:pointer;
+    background:transparent;color:var(--ink-soft);
+    transition:color .2s var(--ease),background .2s var(--ease)}
+  .langbar button:hover{color:var(--ink)}
+  .langbar button[aria-pressed="true"]{background:var(--cream-2);color:var(--carbon)}
+  html[data-lang="es"] .en{display:none}
+  html:not([data-lang="es"]) .es{display:none}
+  footer{margin-top:60px;padding-top:26px;border-top:1px solid var(--line);
     font-size:13px;color:var(--ink-soft)}
-  footer a{color:var(--ink-soft)}
+  footer a{color:var(--ink-soft);text-decoration:none}
+  footer a:hover{color:var(--ink)}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
+
+<nav class="langbar" aria-label="Language">
+  <button type="button" data-lang-btn="en" aria-pressed="true">EN</button>
+  <button type="button" data-lang-btn="es" aria-pressed="false">ES</button>
+</nav>
+
 <div class="wrap">
   <header>
     <a class="mark" href="index.html">Hane Yoga</a>
-    <h1>Términos y condiciones</h1>
-    <nav class="langs">
-      <a href="#es" aria-current="page">Español</a>
-      <a href="#en">English</a>
-    </nav>
+    <h1><span class="en">Terms of Service</span><span class="es">Términos y condiciones</span></h1>
   </header>
 
-  <section id="es">
-<p class="updated">Última actualización: agosto de 2026</p>
-<h2>1 · Qué es Hane Yoga</h2>
-<p>Hane Yoga es una app para practicar yoga. La cámara de tu dispositivo estima la posición de tu cuerpo y la app te da indicaciones de alineación en tiempo real.</p>
-<h2>2 · No es consejo médico</h2>
-<p>La app no es un dispositivo médico y no ofrece diagnóstico ni consejo médico. El yoga implica riesgo de lesión. Practica dentro de tus límites, detente si sientes dolor y consulta a un profesional de la salud antes de empezar si tienes alguna condición, estás embarazada o te recuperas de una lesión. Practicas bajo tu propia responsabilidad.</p>
-<h2>3 · Las indicaciones son aproximadas</h2>
-<p>El feedback lo genera un modelo que corre en el dispositivo y puede equivocarse, sobre todo con poca luz, ropa holgada o si tu cuerpo queda parcialmente fuera del encuadre. Nunca fuerces una postura porque la app lo diga.</p>
-<h2>4 · Suscripción</h2>
-<p>El acceso se ofrece como suscripción de renovación automática, anual o mensual. Los precios se muestran en tu moneda local antes de que confirmes.</p>
-<p>Si aplica una prueba gratuita, el cobro empieza cuando la prueba termina, salvo que canceles al menos 24 horas antes. El cargo se hace a tu Apple ID al confirmar la compra o al terminar la prueba. Cada suscripción se renueva sola por el mismo periodo salvo que la canceles al menos 24 horas antes de que acabe. Puedes gestionarla o cancelarla en los ajustes de tu Apple ID. Al suscribirte se pierde el tiempo de prueba no usado.</p>
-<h2>5 · Precio de fundador</h2>
-<p>El precio de fundador es un plan aparte, ofrecido a un número limitado de miembros iniciales. Mientras tu suscripción siga activa y sin cancelar, se renueva al precio con el que la contrataste. Si cancelas y vuelves a suscribirte más adelante, aplica el precio vigente en ese momento. El plan de fundador puede retirarse en cualquier momento; retirarlo no cambia el precio de las suscripciones que ya estén activas.</p>
-<h2>6 · Tu cuenta</h2>
-<p>Eres responsable de resguardar tus credenciales y de la actividad de tu cuenta.</p>
-<h2>7 · Uso aceptable</h2>
-<p>No copies, revendas ni hagas ingeniería inversa de la app, ni la uses para construir un producto competidor.</p>
-<h2>8 · Cambios</h2>
-<p>Podemos actualizar la app y estos términos. Seguir usándola después de un cambio implica que lo aceptas.</p>
-<h2>9 · Contacto</h2>
-<p>adavidrobayo7@gmail.com</p>
-  </section>
-
-  <section id="en">
-    <h1 style="font-size:22px;margin-bottom:18px">Terms of Service</h1>
+  <div class="en">
 <p class="updated">Last updated: August 2026</p>
 <h2>1 · What Hane Yoga is</h2>
 <p>Hane Yoga is a yoga practice app. Your device camera estimates your body position and the app offers alignment guidance in real time.</p>
@@ -98,11 +92,54 @@
 <p>We may update the app and these terms. Continuing to use the app after a change means you accept it.</p>
 <h2>9 · Contact</h2>
 <p>adavidrobayo7@gmail.com</p>
-  </section>
+  </div>
+  <div class="es">
+<p class="updated">Última actualización: agosto de 2026</p>
+<h2>1 · Qué es Hane Yoga</h2>
+<p>Hane Yoga es una app para practicar yoga. La cámara de tu dispositivo estima la posición de tu cuerpo y la app te da indicaciones de alineación en tiempo real.</p>
+<h2>2 · No es consejo médico</h2>
+<p>La app no es un dispositivo médico y no ofrece diagnóstico ni consejo médico. El yoga implica riesgo de lesión. Practica dentro de tus límites, detente si sientes dolor y consulta a un profesional de la salud antes de empezar si tienes alguna condición, estás embarazada o te recuperas de una lesión. Practicas bajo tu propia responsabilidad.</p>
+<h2>3 · Las indicaciones son aproximadas</h2>
+<p>El feedback lo genera un modelo que corre en el dispositivo y puede equivocarse, sobre todo con poca luz, ropa holgada o si tu cuerpo queda parcialmente fuera del encuadre. Nunca fuerces una postura porque la app lo diga.</p>
+<h2>4 · Suscripción</h2>
+<p>El acceso se ofrece como suscripción de renovación automática, anual o mensual. Los precios se muestran en tu moneda local antes de que confirmes.</p>
+<p>Si aplica una prueba gratuita, el cobro empieza cuando la prueba termina, salvo que canceles al menos 24 horas antes. El cargo se hace a tu Apple ID al confirmar la compra o al terminar la prueba. Cada suscripción se renueva sola por el mismo periodo salvo que la canceles al menos 24 horas antes de que acabe. Puedes gestionarla o cancelarla en los ajustes de tu Apple ID. Al suscribirte se pierde el tiempo de prueba no usado.</p>
+<h2>5 · Precio de fundador</h2>
+<p>El precio de fundador es un plan aparte, ofrecido a un número limitado de miembros iniciales. Mientras tu suscripción siga activa y sin cancelar, se renueva al precio con el que la contrataste. Si cancelas y vuelves a suscribirte más adelante, aplica el precio vigente en ese momento. El plan de fundador puede retirarse en cualquier momento; retirarlo no cambia el precio de las suscripciones que ya estén activas.</p>
+<h2>6 · Tu cuenta</h2>
+<p>Eres responsable de resguardar tus credenciales y de la actividad de tu cuenta.</p>
+<h2>7 · Uso aceptable</h2>
+<p>No copies, revendas ni hagas ingeniería inversa de la app, ni la uses para construir un producto competidor.</p>
+<h2>8 · Cambios</h2>
+<p>Podemos actualizar la app y estos términos. Seguir usándola después de un cambio implica que lo aceptas.</p>
+<h2>9 · Contacto</h2>
+<p>adavidrobayo7@gmail.com</p>
+  </div>
 
   <footer>
     <p>Hane Yoga · <a href="mailto:adavidrobayo7@gmail.com">adavidrobayo7@gmail.com</a></p>
   </footer>
 </div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  function setLang(lang) {
+    if (lang === 'es') { root.setAttribute('data-lang','es'); root.lang='es'; }
+    else                { root.removeAttribute('data-lang');   root.lang='en'; }
+    try { localStorage.setItem('hane-lang', lang); } catch (e) {}
+    document.querySelectorAll('[data-lang-btn]').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.dataset.langBtn === lang));
+    });
+  }
+  var saved = null;
+  try { saved = localStorage.getItem('hane-lang'); } catch (e) {}
+  setLang(saved === 'es' ? 'es' : 'en');
+  document.querySelectorAll('[data-lang-btn]').forEach(function (b) {
+    b.addEventListener('click', function () { setLang(b.dataset.langBtn); });
+  });
+})();
+</script>
+
 </body>
 </html>
