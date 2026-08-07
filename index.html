@@ -61,7 +61,11 @@
   }
   img{max-width:100%;display:block}
   a{color:inherit}
-  .wrap{max-width:1120px;margin:0 auto;padding:0 clamp(20px,4vw,32px)}
+  /* `padding-inline`, NO el atajo `padding:0 X`. Las secciones llevan
+     class="wrap", y `.wrap` gana en especificidad a `section`: el atajo
+     fijaba el padding vertical en 0 y anulaba todo el espaciado entre
+     bloques. Es la razón por la que las tarjetas salían pegadas. */
+  .wrap{max-width:1120px;margin:0 auto;padding-inline:clamp(20px,4vw,32px)}
   .narrow{max-width:780px;margin:0 auto}
   /* Media dosis arriba y abajo: entre dos secciones suman una completa y
      nunca puede quedar en cero. La versión anterior anulaba el padding
@@ -116,7 +120,12 @@
      se coloca y se le pone un velo para que el titular no compita con los
      puntos. `cursor:crosshair` invita a mover el ratón, que es donde está
      la gracia del efecto. */
-  .mesh{position:absolute;inset:0;display:block;cursor:crosshair;z-index:0}
+  /* `width:100%;height:100%` no es redundante con `inset:0`. En un elemento
+     reemplazado (canvas, img) con width:auto, `inset:0` NO estira: el
+     navegador usa el tamaño intrínseco —300×150 por defecto en canvas— y la
+     malla se dibujaba en una esquina. */
+  .mesh{position:absolute;inset:0;width:100%;height:100%;
+    display:block;cursor:crosshair;z-index:0}
   .mesh-veil{
     position:absolute;inset:0;pointer-events:none;z-index:1;
     background:radial-gradient(ellipse 58% 46% at 50% 46%,
@@ -641,7 +650,12 @@
 
     function build() {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
-      w = canvas.clientWidth; h = canvas.clientHeight;
+      // Se mide el contenedor, no el propio canvas: leer clientWidth del
+      // canvas después de haberle escrito los atributos crea un bucle en el
+      // que cada resize hereda el tamaño anterior.
+      var box = canvas.parentElement.getBoundingClientRect();
+      w = Math.round(box.width) || window.innerWidth;
+      h = Math.round(box.height) || window.innerHeight;
       canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       cols = Math.ceil(w / SPACING) + 1; rows = Math.ceil(h / SPACING) + 1;
