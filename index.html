@@ -86,10 +86,13 @@
   .hero-bg{
     position:absolute;inset:0;background:url('img/hero.jpg') center/cover no-repeat;
   }
+  /* El velo se calibró contra `brandGroup`, que es una foto clara (brillo
+     medio 163). Con el degradado anterior —pensado para el fondo oscuro del
+     teléfono— la imagen desaparecía y el hero salía negro. */
   .hero-bg::after{
     content:"";position:absolute;inset:0;
     background:linear-gradient(180deg,
-      rgba(13,12,11,.72) 0%, rgba(13,12,11,.42) 38%, rgba(13,12,11,.96) 100%);
+      rgba(13,12,11,.55) 0%, rgba(13,12,11,.30) 42%, rgba(13,12,11,.93) 100%);
   }
   .hero > *{position:relative;z-index:1}
   .logo{width:min(210px,52vw);margin:0 auto 34px;filter:drop-shadow(0 4px 22px rgba(0,0,0,.5))}
@@ -229,11 +232,11 @@
   /* ── Cierre ────────────────────────────────────────────────────── */
   .closing{
     position:relative;text-align:center;padding:clamp(80px,12vw,130px) 24px;
-    background:url('img/group.jpg') center/cover no-repeat;
+    background:url('img/closing.jpg') center/cover no-repeat;
   }
   .closing::before{
     content:"";position:absolute;inset:0;
-    background:linear-gradient(180deg,rgba(13,12,11,.86),rgba(13,12,11,.94));
+    background:linear-gradient(180deg,rgba(13,12,11,.80),rgba(13,12,11,.92));
   }
   .closing > *{position:relative;z-index:1}
   .closing h2{font-size:clamp(24px,5vw,44px);max-width:14ch;margin:0 auto}
@@ -271,7 +274,7 @@
 <!-- ══ CÓMO FUNCIONA ═════════════════════════════════════════════ -->
 <section class="wrap">
   <div class="split">
-    <div class="shot"><img src="img/pose.jpg" alt="Práctica guiada por la cámara" loading="lazy"></div>
+    <div class="shot"><img src="img/pose.jpg" alt="Práctica guiada por la cámara" width="1100" height="733"></div>
     <div>
       <div class="eyebrow">Cómo funciona</div>
       <h2 class="section-title">Tres pasos y el tapete</h2>
